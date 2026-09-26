@@ -1,0 +1,10 @@
+{
+    "cmake.useCMakePresets": "always",
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "*.wgsl": "wgsl",
+        "*.html.in": "html"
+    },
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true
+}

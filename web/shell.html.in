@@ -1,0 +1,116 @@
+<!doctype html>
+<!--
+    HTML shell shared by every application.
+
+    Processed twice:
+      1. CMake's configure_file() fills in the PXL_* variables written between
+         at-signs                                        -> see cmake/PxlWebApp.cmake
+      2. Emscripten's shell-file option replaces the triple-brace SCRIPT placeholder
+         with the tag that loads index.js / index.wasm
+
+    What the page offers to the C++ side:
+      * a full-window canvas with the CSS selector "#canvas"; pass that selector to
+        wgpu::EmscriptenSurfaceSourceCanvasHTMLSelector when creating the surface
+      * Module.pxlOnFatalError(message): optional hook that shows an error overlay.
+        Call it from C++ with EM_JS / EM_ASM, e.g.
+            EM_ASM({ Module['pxlOnFatalError'](UTF8ToString($0)); }, text);
+        (use the ['...'] form so the Closure compiler cannot rename it)
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@PXL_APP_TITLE@</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --background: #0b0d12;
+            --foreground: #e6e8ee;
+            --muted: #9aa3b5;
+            --error: #ff7a7a;
+        }
+
+        html, body {
+            margin: 0;
+            height: 100%;
+            overflow: hidden;
+            background: var(--background);
+            color: var(--foreground);
+            font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+        }
+
+        /* CSS decides the display size. The C++ side must size the drawing buffer
+           itself: canvas width/height = CSS size * window.devicePixelRatio. */
+        #canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            outline: none;
+        }
+
+        #overlay {
+            position: fixed;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        #overlay[hidden] { display: none; }
+
+        #overlay-text {
+            max-width: 640px;
+            margin: 0;
+            color: var(--muted);
+            white-space: pre-wrap;
+        }
+
+        #overlay.is-error { background: rgb(11 13 18 / 85%); }
+        #overlay.is-error #overlay-text { color: var(--error); }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" tabindex="-1"></canvas>
+    <div id="overlay" role="status"><p id="overlay-text">Loading&hellip;</p></div>
+
+    <script>
+        'use strict';
+
+        const overlay = document.getElementById('overlay');
+        const overlayText = document.getElementById('overlay-text');
+        let hasFatalError = false;
+
+        function showStatus(text) {
+            if (hasFatalError) return;
+            overlayText.textContent = text;
+            overlay.hidden = text === '';
+        }
+
+        function showFatalError(text) {
+            if (hasFatalError) return;  // Keep the first error; later ones are usually fallout.
+            hasFatalError = true;
+            overlayText.textContent = text;
+            overlay.classList.add('is-error');
+            overlay.hidden = false;
+        }
+
+        // Emscripten picks up this global before running the application.
+        var Module = {
+            canvas: document.getElementById('canvas'),
+            setStatus: showStatus,
+            onAbort: (reason) => showFatalError(`The application stopped unexpectedly.\n${reason}`),
+            pxlOnFatalError: showFatalError,
+        };
+
+        if (!('gpu' in navigator)) {
+            showFatalError(
+                'WebGPU is not available in this browser.\n' +
+                'Use a recent version of Chrome, Edge, Firefox or Safari, and open the page ' +
+                'over https:// or http://localhost.');
+        }
+    </script>
+    {{{ SCRIPT }}}
+</body>
+</html>

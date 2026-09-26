@@ -1,0 +1,11 @@
+# Normalise line endings so Windows, Linux and macOS checkouts stay diff-clean.
+* text=auto eol=lf
+
+*.wgsl text
+*.cmake text
+*.in   text
+
+*.png  binary
+*.jpg  binary
+*.ktx2 binary
+*.wasm binary

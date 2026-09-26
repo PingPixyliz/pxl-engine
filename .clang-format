@@ -1,0 +1,55 @@
+# Formatting rules for all C++ sources. Run: clang-format -i <files>
+# Needs clang-format 13 or newer (IndentAccessModifiers, LambdaBodyIndentation).
+---
+Language: Cpp
+BasedOnStyle: Google
+Standard: c++20
+
+ColumnLimit: 120
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+
+# Opening braces always go on their own line.
+BreakBeforeBraces: Allman
+NamespaceIndentation: All
+FixNamespaceComments: false
+IndentCaseLabels: true
+
+# public:/private: get their own level inside a class, members one level deeper.
+# clang-format applies this to every record, so struct members are indented twice too.
+IndentAccessModifiers: true
+
+# Wrapped arguments and parameters continue one indent deeper, not aligned to '('.
+AlignAfterOpenBracket: DontAlign
+BinPackParameters: false
+AllowAllParametersOfDeclarationOnNextLine: false
+
+# A lambda passed as an argument keeps its header on the call line; its braces line up
+# with the statement, like any other block.
+LambdaBodyIndentation: OuterScope
+AllowShortLambdasOnASingleLine: Empty
+
+DerivePointerAlignment: false
+PointerAlignment: Left
+SpacesBeforeTrailingComments: 1
+
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+
+# Includes are sorted within each blank-line separated block: standard library first,
+# then other <...> headers (webgpu, emscripten, pxl, ...), then "..." headers.
+IncludeBlocks: Preserve
+SortIncludes: CaseSensitive
+IncludeCategories:
+  - Regex: '^<[a-z_]+>'
+    Priority: 1
+  - Regex: '^<'
+    Priority: 2
+  - Regex: '.*'
+    Priority: 3
+...

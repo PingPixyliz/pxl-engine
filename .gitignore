@@ -1,0 +1,23 @@
+# Build output (every preset builds into build/<preset>/)
+/build/
+
+# CMake user-local overrides
+CMakeUserPresets.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Editors / IDEs
+.idea/
+.vs/
+.cache/
+*.swp
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# OS
+.DS_Store
+Thumbs.db

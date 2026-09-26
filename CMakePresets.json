@@ -1,0 +1,45 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 0 },
+    "configurePresets": [
+        {
+            "name": "web-base",
+            "hidden": true,
+            "description": "Common settings for all Emscripten builds. Requires the EMSDK environment variable.",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+        },
+        {
+            "name": "web-debug",
+            "displayName": "Web (Debug)",
+            "description": "Unoptimised build with DWARF debug info and runtime assertions.",
+            "inherits": "web-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "web-release",
+            "displayName": "Web (Release)",
+            "description": "Optimised build intended for deployment (JavaScript minified with Closure).",
+            "inherits": "web-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "PXL_ENABLE_CLOSURE": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "web-debug",
+            "displayName": "Web (Debug)",
+            "configurePreset": "web-debug"
+        },
+        {
+            "name": "web-release",
+            "displayName": "Web (Release)",
+            "configurePreset": "web-release"
+        }
+    ]
+}

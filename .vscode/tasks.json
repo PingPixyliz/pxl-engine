@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build (debug)",
+            "type": "shell",
+            "command": "python scripts/build.py --config debug",
+            "group": { "kind": "build", "isDefault": true },
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Build (release)",
+            "type": "shell",
+            "command": "python scripts/build.py --config release",
+            "group": "build",
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Rebuild from scratch (debug)",
+            "type": "shell",
+            "command": "python scripts/build.py --config debug --fresh",
+            "group": "build",
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "Serve (debug)",
+            "type": "shell",
+            "command": "python scripts/serve.py --config debug --open",
+            "isBackground": true,
+            "problemMatcher": []
+        },
+        {
+            "label": "Serve (release)",
+            "type": "shell",
+            "command": "python scripts/serve.py --config release --open",
+            "isBackground": true,
+            "problemMatcher": []
+        }
+    ]
+}

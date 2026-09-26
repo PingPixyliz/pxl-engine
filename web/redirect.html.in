@@ -1,0 +1,20 @@
+<!doctype html>
+<!--
+    Generated into <dist>/index.html by pxl_set_default_app() (cmake/PxlWebApp.cmake):
+    the site root sends visitors straight to the default app. The URL is relative, so
+    this also works when the site lives in a sub-folder (e.g. GitHub Pages).
+-->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="0; url=@PXL_DEFAULT_APP@/">
+    <title>@PXL_DEFAULT_APP_TITLE@</title>
+    <style>
+        html { color-scheme: dark; background: #0b0d12; }
+    </style>
+    <script>location.replace('@PXL_DEFAULT_APP@/' + location.search + location.hash);</script>
+</head>
+<body>
+    <a href="@PXL_DEFAULT_APP@/">@PXL_DEFAULT_APP_TITLE@</a>
+</body>
+</html>
