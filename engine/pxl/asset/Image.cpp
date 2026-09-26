@@ -1,8 +1,9 @@
 #include <pxl/asset/Image.hpp>
 
 #include <cstddef>
-#include <cstdio>
 #include <cstring>
+
+#include <pxl/log/Log.hpp>
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STBI_NO_STDIO
@@ -22,7 +23,7 @@ namespace pxl::asset
             static_cast<int>(file.size()), &width, &height, &channels, static_cast<int>(Image::k_BytesPerPixel));
         if (!pixels)
         {
-            std::fprintf(stderr, "[pxl] DecodeImage: %s\n", stbi_failure_reason());
+            log::Error("DecodeImage: {}", stbi_failure_reason());
             return {};
         }
 

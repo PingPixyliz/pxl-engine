@@ -8,5 +8,6 @@
 #include <pxl/gfx/Resource.hpp>
 #include <pxl/gfx/Surface.hpp>
 #include <pxl/gfx/Texture.hpp>
+#include <pxl/log/Log.hpp>
 #include <pxl/platform/Canvas.hpp>
 #include <pxl/platform/Page.hpp>

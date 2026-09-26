@@ -7,7 +7,7 @@ pxl_set_warnings(pxl_engine)
 target_include_directories(pxl_engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 target_compile_features(pxl_engine PUBLIC cxx_std_20)
 target_link_libraries(pxl_engine
-    PUBLIC pxl::webgpu pxl::glm
+    PUBLIC pxl::webgpu pxl::glm fmt::fmt
     PRIVATE pxl::stb
 )
 target_link_options(pxl_engine PUBLIC "-sFETCH=1")

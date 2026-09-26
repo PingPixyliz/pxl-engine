@@ -1,9 +1,10 @@
 #include <pxl/platform/Page.hpp>
 
-#include <cstdio>
 #include <string>
 
 #include <emscripten/em_js.h>
+
+#include <pxl/log/Log.hpp>
 
 // clang-format off
 EM_JS(void, pxl_show_fatal_error, (const char* message), {
@@ -15,7 +16,7 @@ namespace pxl::platform
 {
     void ShowFatalError(std::string_view message)
     {
-        std::fprintf(stderr, "[pxl] fatal: %.*s\n", static_cast<int>(message.size()), message.data());
+        log::Error("fatal: {}", message);
 
         const std::string text(message);
         pxl_show_fatal_error(text.c_str());

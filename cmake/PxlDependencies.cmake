@@ -1,9 +1,9 @@
 # Third-party dependencies, fetched at configure time and pinned by URL + SHA-256.
 # To upgrade one: change its URL, then copy the new hash from CMake's hash-mismatch error.
 #
-# All of them are header-only: SOURCE_SUBDIR names a directory that does not exist, so
+# GLM and stb are header-only: SOURCE_SUBDIR names a directory that does not exist, so
 # FetchContent downloads the archive without running the library's own CMakeLists.txt.
-# Their include directories are SYSTEM so the project's warning flags skip their headers.
+# Include directories are SYSTEM so the project's warning flags skip third-party headers.
 
 include_guard(GLOBAL)
 
@@ -39,3 +39,19 @@ add_library(pxl_stb INTERFACE)
 add_library(pxl::stb ALIAS pxl_stb)
 
 target_include_directories(pxl_stb SYSTEM INTERFACE "${stb_SOURCE_DIR}")
+
+# fmt 12 turns on C++20 module scanning, which fails with Emscripten, so both are switched off.
+FetchContent_Declare(fmt
+    URL      "https://github.com/fmtlib/fmt/releases/download/12.2.0/fmt-12.2.0.zip"
+    URL_HASH "SHA256=a2f4a8d51178f954e4c339007f77edd76ba0cb2e36f87a48e5a5403d9be5878f"
+    SYSTEM
+    DOWNLOAD_EXTRACT_TIMESTAMP ON
+)
+block()
+    set(FMT_MODULE OFF)
+    set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+    FetchContent_MakeAvailable(fmt)
+endblock()
+
+# No locale support and less inlining: the release wasm is about half the size of the default.
+target_compile_definitions(fmt PUBLIC FMT_OPTIMIZE_SIZE=2)

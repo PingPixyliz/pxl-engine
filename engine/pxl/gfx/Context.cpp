@@ -1,7 +1,9 @@
 #include <pxl/gfx/Context.hpp>
 
-#include <cstdio>
+#include <string_view>
 #include <utility>
+
+#include <pxl/log/Log.hpp>
 
 namespace pxl::gfx
 {
@@ -20,11 +22,6 @@ namespace pxl::gfx
                 default:
                     return "unknown";
             }
-        }
-
-        void PrintError(const char* what, std::string_view message)
-        {
-            std::fprintf(stderr, "[pxl] %s: %.*s\n", what, static_cast<int>(message.size()), message.data());
         }
     }
 
@@ -68,11 +65,11 @@ namespace pxl::gfx
             {
                 return;
             }
-            PrintError("device lost", message);
+            log::Error("device lost: {}", std::string_view(message));
         });
         deviceDesc.SetUncapturedErrorCallback([](const wgpu::Device&, wgpu::ErrorType type, wgpu::StringView message)
         {
-            PrintError(ToString(type), message);
+            log::Error("{}: {}", ToString(type), std::string_view(message));
         });
 
         m_Adapter.RequestDevice(&deviceDesc, wgpu::CallbackMode::AllowSpontaneous,

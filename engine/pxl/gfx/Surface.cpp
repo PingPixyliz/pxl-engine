@@ -1,6 +1,8 @@
 #include <pxl/gfx/Surface.hpp>
 
-#include <cstdio>
+#include <cstdint>
+
+#include <pxl/log/Log.hpp>
 
 namespace pxl::gfx
 {
@@ -56,8 +58,8 @@ namespace pxl::gfx
                 Configure(m_Width, m_Height);
                 return nullptr;
             default:
-                std::fprintf(stderr, "[pxl] Surface::AcquireNextView: GetCurrentTexture failed (status %u)\n",
-                    static_cast<unsigned>(surfaceTexture.status));
+                log::Error("Surface::AcquireNextView: GetCurrentTexture failed (status {})",
+                    static_cast<uint32_t>(surfaceTexture.status));
                 return nullptr;
         }
 

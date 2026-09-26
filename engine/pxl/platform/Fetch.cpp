@@ -1,11 +1,12 @@
 #include <pxl/platform/Fetch.hpp>
 
-#include <cstdio>
 #include <cstring>
 #include <memory>
 #include <utility>
 
 #include <emscripten/fetch.h>
+
+#include <pxl/log/Log.hpp>
 
 namespace pxl::platform
 {
@@ -22,7 +23,7 @@ namespace pxl::platform
         void OnError(emscripten_fetch_t* fetch)
         {
             std::unique_ptr<FetchCallback> onDone(static_cast<FetchCallback*>(fetch->userData));
-            std::fprintf(stderr, "[pxl] fetch %s failed: HTTP %u\n", fetch->url, static_cast<unsigned>(fetch->status));
+            log::Error("fetch {} failed: HTTP {}", fetch->url, fetch->status);
             (*onDone)(false, {});
             emscripten_fetch_close(fetch);
         }
