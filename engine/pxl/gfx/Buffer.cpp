@@ -1,4 +1,4 @@
-#include <pxl/gfx/Resource.hpp>
+#include <pxl/gfx/Buffer.hpp>
 
 #include <cstring>
 
@@ -12,17 +12,6 @@ namespace pxl::gfx
         {
             return (value + alignment - 1) & ~(alignment - 1);
         }
-    }
-
-    wgpu::ShaderModule CreateShaderModule(const wgpu::Device& device, std::string_view wgsl, std::string_view label)
-    {
-        wgpu::ShaderSourceWGSL source{};
-        source.code = wgsl;
-
-        wgpu::ShaderModuleDescriptor descriptor{};
-        descriptor.nextInChain = &source;
-        descriptor.label = label;
-        return device.CreateShaderModule(&descriptor);
     }
 
     wgpu::Buffer CreateBuffer(const wgpu::Device& device,

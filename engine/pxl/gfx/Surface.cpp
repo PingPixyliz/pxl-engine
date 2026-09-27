@@ -1,11 +1,32 @@
 #include <pxl/gfx/Surface.hpp>
 
-#include <cstdint>
-
 #include <pxl/log/Log.hpp>
 
 namespace pxl::gfx
 {
+    namespace
+    {
+        const char* ToString(wgpu::SurfaceGetCurrentTextureStatus status)
+        {
+            switch (status)
+            {
+                case wgpu::SurfaceGetCurrentTextureStatus::SuccessOptimal:
+                    return "optimal";
+                case wgpu::SurfaceGetCurrentTextureStatus::SuccessSuboptimal:
+                    return "suboptimal";
+                case wgpu::SurfaceGetCurrentTextureStatus::Timeout:
+                    return "timed out";
+                case wgpu::SurfaceGetCurrentTextureStatus::Outdated:
+                    return "outdated";
+                case wgpu::SurfaceGetCurrentTextureStatus::Lost:
+                    return "lost";
+                case wgpu::SurfaceGetCurrentTextureStatus::Error:
+                    return "error";
+            }
+            return "unrecognised";
+        }
+    }
+
     Surface::Surface(const wgpu::Instance& instance, const std::string& canvasSelector)
     {
         wgpu::EmscriptenSurfaceSourceCanvasHTMLSelector canvasSource{};
@@ -55,11 +76,14 @@ namespace pxl::gfx
             case wgpu::SurfaceGetCurrentTextureStatus::Timeout:
             case wgpu::SurfaceGetCurrentTextureStatus::Outdated:
             case wgpu::SurfaceGetCurrentTextureStatus::Lost:
-                Configure(m_Width, m_Height);
+                log::Warn("Surface::AcquireNextView: surface {}, skipping the frame", ToString(surfaceTexture.status));
+                if (m_Width > 0 && m_Height > 0)
+                {
+                    Configure(m_Width, m_Height);
+                }
                 return nullptr;
-            default:
-                log::Error("Surface::AcquireNextView: GetCurrentTexture failed (status {})",
-                    static_cast<uint32_t>(surfaceTexture.status));
+            case wgpu::SurfaceGetCurrentTextureStatus::Error:
+                log::Error("Surface::AcquireNextView: GetCurrentTexture failed ({})", ToString(surfaceTexture.status));
                 return nullptr;
         }
 

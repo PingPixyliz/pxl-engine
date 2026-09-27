@@ -13,15 +13,18 @@ namespace pxl::gfx
         {
             switch (type)
             {
+                case wgpu::ErrorType::NoError:
+                    return "no error";
                 case wgpu::ErrorType::Validation:
                     return "validation";
                 case wgpu::ErrorType::OutOfMemory:
                     return "out of memory";
                 case wgpu::ErrorType::Internal:
                     return "internal";
-                default:
+                case wgpu::ErrorType::Unknown:
                     return "unknown";
             }
+            return "unrecognised";
         }
     }
 

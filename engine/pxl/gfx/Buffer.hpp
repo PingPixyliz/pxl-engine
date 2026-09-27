@@ -9,14 +9,11 @@
 
 namespace pxl::gfx
 {
-    wgpu::ShaderModule CreateShaderModule(const wgpu::Device& device,
-        std::string_view wgsl,
-        std::string_view label = "");
-
     wgpu::Buffer CreateBuffer(const wgpu::Device& device,
         wgpu::BufferUsage usage,
         std::span<const std::byte> data,
         std::string_view label = "");
+
     wgpu::Buffer CreateBuffer(const wgpu::Device& device,
         wgpu::BufferUsage usage,
         uint64_t size,

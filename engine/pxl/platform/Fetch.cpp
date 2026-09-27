@@ -4,6 +4,7 @@
 #include <memory>
 #include <utility>
 
+#include <emscripten/emscripten.h>
 #include <emscripten/fetch.h>
 
 #include <pxl/log/Log.hpp>
@@ -27,6 +28,12 @@ namespace pxl::platform
             (*onDone)(false, {});
             emscripten_fetch_close(fetch);
         }
+
+        void OnStartFailed(void* userData)
+        {
+            std::unique_ptr<FetchCallback> onDone(static_cast<FetchCallback*>(userData));
+            (*onDone)(false, {});
+        }
     }
 
     void FetchFile(const std::string& url, FetchCallback callback)
@@ -38,6 +45,11 @@ namespace pxl::platform
         attr.onsuccess = OnSuccess;
         attr.onerror = OnError;
         attr.userData = new FetchCallback(std::move(callback));
-        emscripten_fetch(&attr, url.c_str());
+
+        if (!emscripten_fetch(&attr, url.c_str()))
+        {
+            log::Error("fetch {} could not be started", url);
+            emscripten_async_call(OnStartFailed, attr.userData, 0);
+        }
     }
 }

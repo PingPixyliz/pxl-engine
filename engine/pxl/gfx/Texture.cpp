@@ -1,5 +1,7 @@
 #include <pxl/gfx/Texture.hpp>
 
+#include <pxl/log/Log.hpp>
+
 namespace pxl::gfx
 {
     wgpu::Texture CreateTexture2D(const wgpu::Device& device,
@@ -22,6 +24,7 @@ namespace pxl::gfx
     {
         if (image.IsEmpty())
         {
+            log::Error("CreateTexture: no image data for '{}'", label);
             return nullptr;
         }
 

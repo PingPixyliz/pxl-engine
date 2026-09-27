@@ -6,7 +6,7 @@
 
 #include <webgpu/webgpu_cpp.h>
 
-#include <pxl/gfx/Resource.hpp>
+#include <pxl/gfx/Buffer.hpp>
 
 namespace pxl::gfx
 {
