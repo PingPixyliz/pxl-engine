@@ -6,8 +6,10 @@
 #include <pxl/gfx/DepthBuffer.hpp>
 #include <pxl/gfx/Frame.hpp>
 #include <pxl/gfx/Resource.hpp>
+#include <pxl/gfx/StorageBuffer.hpp>
 #include <pxl/gfx/Surface.hpp>
 #include <pxl/gfx/Texture.hpp>
+#include <pxl/gfx/UniformBuffer.hpp>
 #include <pxl/log/Log.hpp>
 #include <pxl/platform/Canvas.hpp>
 #include <pxl/platform/Page.hpp>
