@@ -13,4 +13,6 @@
 #include <pxl/gfx/UniformBuffer.hpp>
 #include <pxl/log/Log.hpp>
 #include <pxl/platform/Canvas.hpp>
+#include <pxl/platform/Input.hpp>
+#include <pxl/platform/Key.hpp>
 #include <pxl/platform/Page.hpp>

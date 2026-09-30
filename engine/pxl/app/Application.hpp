@@ -8,6 +8,7 @@
 #include <pxl/gfx/DepthBuffer.hpp>
 #include <pxl/gfx/Frame.hpp>
 #include <pxl/platform/Canvas.hpp>
+#include <pxl/platform/Input.hpp>
 
 namespace pxl
 {
@@ -36,6 +37,7 @@ namespace pxl
 
             gfx::Context& GetContext() { return m_Context; }
             const platform::Canvas& GetCanvas() const { return m_Canvas; }
+            const platform::Input& GetInput() const { return m_Input; }
 
         private:
             friend void Run(std::unique_ptr<Application> app, AppConfig config);
@@ -46,6 +48,7 @@ namespace pxl
             gfx::Context m_Context;
             gfx::DepthBuffer m_DepthBuffer;
             platform::Canvas m_Canvas;
+            platform::Input m_Input;
             double m_LastTimeMs = -1.0;
     };
 }

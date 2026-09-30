@@ -23,6 +23,7 @@ namespace pxl
     void Application::Start(const AppConfig& config)
     {
         m_Canvas = platform::Canvas(config.canvasSelector);
+        m_Input.Attach(config.canvasSelector);
 
         m_Context.Initialize(config.canvasSelector, [this](bool success, std::string_view error)
         {
@@ -54,6 +55,7 @@ namespace pxl
             OnResize(m_Canvas.GetWidth(), m_Canvas.GetHeight());
         }
 
+        m_Input.BeginFrame();
         OnUpdate(deltaSeconds);
 
         wgpu::TextureView target = surface.AcquireNextView();
