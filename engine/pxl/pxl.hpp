@@ -6,6 +6,7 @@
 #include <pxl/gfx/Context.hpp>
 #include <pxl/gfx/DepthBuffer.hpp>
 #include <pxl/gfx/Frame.hpp>
+#include <pxl/gfx/Pipeline.hpp>
 #include <pxl/gfx/Shader.hpp>
 #include <pxl/gfx/StorageBuffer.hpp>
 #include <pxl/gfx/Surface.hpp>

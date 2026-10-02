@@ -12,25 +12,11 @@ namespace
             {
                 const wgpu::Device& device = GetContext().GetDevice();
 
-                wgpu::ShaderModule shaderModule =
-                    pxl::gfx::CreateShaderModule(device, shaders::triangle_wgsl, "Triangle Shader");
-
-                wgpu::ColorTargetState colorTarget{};
-                colorTarget.format = GetContext().GetSurface().GetFormat();
-
-                wgpu::FragmentState fragmentState{};
-                fragmentState.module = shaderModule;
-                fragmentState.entryPoint = "fs_main";
-                fragmentState.targetCount = 1;
-                fragmentState.targets = &colorTarget;
-
-                wgpu::RenderPipelineDescriptor pipelineDesc{};
-                pipelineDesc.label = "Triangle Pipeline";
-                pipelineDesc.vertex.module = shaderModule;
-                pipelineDesc.vertex.entryPoint = "vs_main";
-                pipelineDesc.fragment = &fragmentState;
-                pipelineDesc.primitive.topology = wgpu::PrimitiveTopology::TriangleList;
-                m_Pipeline = device.CreateRenderPipeline(&pipelineDesc);
+                pxl::gfx::RenderPipelineConfig config{};
+                config.shader = pxl::gfx::CreateShaderModule(device, shaders::triangle_wgsl, "Triangle Shader");
+                config.colorFormat = GetContext().GetSurface().GetFormat();
+                config.depthFormat = wgpu::TextureFormat::Undefined; // No need depthFormat on this sample
+                m_Pipeline = pxl::gfx::CreateRenderPipeline(device, config, "Triangle Pipeline");
             }
 
             void OnRender(pxl::gfx::Frame& frame) override
